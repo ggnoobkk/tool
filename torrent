@@ -1,53 +1,49 @@
+from colorama import Fore, Back, Style
+import httpx
+from pystyle import *
 import os
-import re
-import time
-from bs4 import BeautifulSoup
-import requests
-import colorama
-from colorama import init, Fore, Back, Style
+os.system('cls' if os.name == 'nt' else 'clear')
+thako = '''\n════════════════════════════════════════════════════════════════════════════════════════════════\n'''
+banner = '''
 
-# Inicializa o colorama para impressão de cores no console
-colorama.init()
+    ██████╗██╗  ██╗███████╗ ██████╗██╗  ██╗███████╗██████╗ 
+   ██╔════╝██║  ██║██╔════╝██╔════╝██║ ██╔╝██╔════╝██╔══██╗
+   ██║     ███████║█████╗  ██║     █████╔╝ █████╗  ██████╔╝
+   ██║     ██╔══██║██╔══╝  ██║     ██╔═██╗ ██╔══╝  ██╔══██╗
+   ╚██████╗██║  ██║███████╗╚██████╗██║  ██╗███████╗██║  ██║
+    ╚═════╝╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+                                                        
 
-# Define as constantes usadas no programa
-IP_PROMPT = 'ip'
-LANGUAGE_STRING = 'en'
-FIRST_USE = 'Visto pela primeira vez: '
-LAST_USE = 'visto pela última vez: '
-TORRENT_CATEGORY = 'category: '
-NAME_TORRENT = 'nome do arquivo: '
-SIZE_TORRENT = 'tamanho do arquivo: '
-SAVE_CHOICE = 'Salvar? y/n '
+                    
+       ╔══════════════════════════════════════════════╗
+       ║               TOKEN SERVER CHECK             ║
+       ║              Coded By Hyur&Thako             ║
+       ║      Eu não sigo tendências, eu as crio.     ║
+       ╚══════════════════════════════════════════════╝               \n'''
 
-# Define os cabeçalhos usados nas requisições HTTP
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4086.0 Safari/537.36",
-    "Connection": "keep-alive",
-    "Host": "iknowwhatyoudownload.com",
-    "Referer": "https://iknowwhatyoudownload.com"
-}
+print(Colorate.Horizontal(Colors.blue_to_purple, Center.XCenter(banner)))
 
-# Imprime o banner do programa
-print(Fore.GREEN)
-print(f"""
-
- ______   ___   ____   ____     ___  ____   ______ 
-|      | /   \ |    \ |    \   /  _]|    \ |      |
-|      ||     ||  D  )|  D  ) /  [_ |  _  ||      |
-|_|  |_||  O  ||    / |    / |    _]|  |  ||_|  |_|
-  |  |  |     ||    \ |    \ |   [_ |  |  |  |  |  
-  |  |  |     ||  .  \|  .  \|     ||  |  |  |  |  
-  |__|   \___/ |__|\_||__|\_||_____||__|__|  |__|  
-                                                    
-              > Created by baalware
-""")
-
-# Pede o endereço IP do usuário e se deseja salvar os resultados em um arquivo
-ip = input(f"{IP_PROMPT}: ")
-save = input(f'{SAVE_CHOICE}').lower()
-print('\n')
-
-def get_torrents(ip_address):
-    """
-    Faz uma requisição HTTP para o site 'iknowwhatyoudownload.com' para buscar os torrents baixados pelo endereço
+token = input(f"{Fore.MAGENTA}token: {Fore.RESET}")
+os.system("cls")
+print(Colorate.Horizontal(Colors.blue_to_purple, Center.XCenter(banner)))
+headers = {'Authorization': token,}
+try:
+    r = httpx.get('https://discord.com/api/v9/users/@me/guilds?with_counts=true', headers=headers)
+    if r.status_code == 200:
+        Write.Print("[+] Running: " + token, Colors.blue_to_purple, interval=0.00)
+        os.system("cls")
+        print(Colorate.Horizontal(Colors.blue_to_purple, Center.XCenter(banner)))
+        print(Colorate.Horizontal(Colors.blue_to_purple, (thako)))
+        guilds = r.json()
+        for guild in guilds:
+            if guild["owner"]:
+                Write.Print( f"\n[+] Posse do {guild['name']} | ID: {guild['id']} | Members: {guild['approximate_member_count']}\n", Colors.red_to_yellow, interval=0.00)
+            elif (int(guild['permissions']) & 8) == 8:
+                Write.Print( f"\n[+] Adm do {guild['name']} | ID: {guild['id']} | Members: {guild['approximate_member_count']}\n", Colors.red_to_yellow, interval=0.00)
+    else:
+        Write.Print("[+] Error: Invalid token: {token}\n", Colors.red_to_yellow, interval=0.01)
+except Exception as e:
+    Write.Print("[+] Error: {e}\n", Colors.red_to_yellow, interval=0.01)
+    print("\n")
+print(Colorate.Horizontal(Colors.blue_to_purple, (thako)))
 input()
